@@ -1,0 +1,26 @@
+=== SWE-AGENT STDOUT ===
+👋 INFO     This is SWE-agent version 1.1.0 (hash='unavailable') with SWE-ReX version 1.4.0 (rex_hash='unavailable').                                                                                                                            
+🔧 INFO     Loading default config from /Users/sidmoparthi/Projects-AI/neuro/swe_agent_data/config/default.yaml, because no other config file is specified. Specify --no_config_file to disable this.                                            
+
+
+=== SWE-AGENT STDERR ===
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/sidmoparthi/Projects-AI/neuro/.venv/lib/python3.11/site-packages/sweagent/__main__.py", line 4, in <module>
+    main()
+  File "/Users/sidmoparthi/Projects-AI/neuro/.venv/lib/python3.11/site-packages/sweagent/run/run.py", line 92, in main
+    run_single_main(remaining_args)
+  File "/Users/sidmoparthi/Projects-AI/neuro/.venv/lib/python3.11/site-packages/sweagent/run/run_single.py", line 221, in run_from_cli
+    run_from_config(BasicCLI(RunSingleConfig, help_text=help_text).get_config(args))  # type: ignore
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmoparthi/Projects-AI/neuro/.venv/lib/python3.11/site-packages/sweagent/run/common.py", line 307, in get_config
+    txt = config_file.read_text()
+          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmoparthi/.pyenv/versions/3.11.8/lib/python3.11/pathlib.py", line 1058, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmoparthi/.pyenv/versions/3.11.8/lib/python3.11/pathlib.py", line 1044, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/sidmoparthi/Projects-AI/neuro/swe_agent_data/config/default.yaml'
