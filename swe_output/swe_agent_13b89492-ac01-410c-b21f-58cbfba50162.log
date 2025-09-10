@@ -1,0 +1,112 @@
+=== SWE-AGENT STDOUT ===
+👋 INFO     This is SWE-agent version 1.1.0 (hash='unavailable') with SWE-ReX version 1.4.0 (rex_hash='unavailable').                                                                                                                            
+🔧 WARN     system_template/instance_template is not set, using empty string. Perhaps you were overwriting the default config? See https://swe-agent.com/latest/usage/cl_tutorial/ for more information. Note: You can ignore this warning in    
+            human mode.                                                                                                                                                                                                                          
+🔧 WARN     system_template/instance_template is not set, using empty string. Perhaps you were overwriting the default config? See https://swe-agent.com/latest/usage/cl_tutorial/ for more information. Note: You can ignore this warning in    
+            human mode.                                                                                                                                                                                                                          
+🔧 INFO     Setting problem statement id to hash of file contents (path: /Users/sidmoparthi/Projects-AI/neuro/run_outputs/plan-plan-4bfd74b5-ea65a8b6/problem_13b89492-ac01-410c-b21f-58cbfba50162.md)                                           
+╭────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Configuration from config files                                                            │
+│ This is all the configuration that was provided from defaults, --config, and CLI arguments │
+│                                                                                            │
+│ agent:                                                                                     │
+│   max_tokens: 2048                                                                         │
+│   model:                                                                                   │
+│     name: gpt-4...                                                                         │
+│ env:                                                                                       │
+│   deployment:                                                                              │
+│     type: dummy...                                                                         │
+│   repo:                                                                                    │
+│     path: '....'                                                                           │
+│ output_dir: swe_output...                                                                  │
+│ problem_statement:                                                                         │
+│   path: problem.md...                                                                      │
+│                                                                                            │
+╰────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─────────────────────────────────────────────────────────────────────────────────╮
+│ Configuration from CLI arguments                                                │
+│ This is all the configuration that was provided from the command line arguments │
+│                                                                                 │
+│ agent:                                                                          │
+│   model:                                                                        │
+│     name: gpt-4...                                                              │
+│     per_instance_cost_limit: 3.0...                                             │
+│ env:                                                                            │
+│   deployment:                                                                   │
+│     type: dummy...                                                              │
+│   repo:                                                                         │
+│     path: /Users/sidmoparthi/Projects...                                        │
+│ output_dir: /Users/sidmoparthi/Projects...                                      │
+│ problem_statement:                                                              │
+│   path: /Users/sidmoparthi/Projects...                                          │
+│                                                                                 │
+╰─────────────────────────────────────────────────────────────────────────────────╯
+╭─────────────────────────────────────────────────────────────────────────────────╮
+│ Merged configuration                                                            │
+│ This is the merged configuration that was used to instantiate the config object │
+│                                                                                 │
+│ agent:                                                                          │
+│   max_tokens: 2048                                                              │
+│   model:                                                                        │
+│     name: gpt-4...                                                              │
+│     per_instance_cost_limit: 3.0...                                             │
+│ env:                                                                            │
+│   deployment:                                                                   │
+│     type: dummy...                                                              │
+│   repo:                                                                         │
+│     path: /Users/sidmoparthi/Projects...                                        │
+│ output_dir: /Users/sidmoparthi/Projects...                                      │
+│ problem_statement:                                                              │
+│   path: /Users/sidmoparthi/Projects...                                          │
+│                                                                                 │
+╰─────────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Validation error                                                                                                  │
+│                                                                                                                   │
+│ The following errors are raised by Pydantic, trying to instantiate the configuration based on                     │
+│ the merged configuration dictionary (see above).                                                                  │
+│                                                                                                                   │
+│ Every new indented block corresponds to a different error from Pydantic.                                          │
+│ The first line of each block is the attribute that failed validation, the following lines are the error messages. │
+│                                                                                                                   │
+│ If you see many lines of errors, there are probably different ways to instantiate the same object (a union type). │
+│ For example, there are different deployments with different options each. Pydantic is then trying                 │
+│ one after the other and reporting the failures for each of them.                                                  │
+│ More on union types: https://swe-agent.com/latest/usage/cl_tutorial/#union-types                                  │
+│                                                                                                                   │
+│ 6 validation errors for RunSingleConfig                                                                           │
+│ agent.DefaultAgentConfig.max_tokens                                                                               │
+│   Extra inputs are not permitted                                                                                  │
+│     For further information visit https://errors.pydantic.dev/2.11/v/extra_forbidden                              │
+│ agent.RetryAgentConfig.agent_configs                                                                              │
+│   Field required                                                                                                  │
+│     For further information visit https://errors.pydantic.dev/2.11/v/missing                                      │
+│ agent.RetryAgentConfig.retry_loop                                                                                 │
+│   Field required                                                                                                  │
+│     For further information visit https://errors.pydantic.dev/2.11/v/missing                                      │
+│ agent.RetryAgentConfig.model                                                                                      │
+│   Extra inputs are not permitted                                                                                  │
+│     For further information visit https://errors.pydantic.dev/2.11/v/extra_forbidden                              │
+│ agent.RetryAgentConfig.max_tokens                                                                                 │
+│   Extra inputs are not permitted                                                                                  │
+│     For further information visit https://errors.pydantic.dev/2.11/v/extra_forbidden                              │
+│ agent.ShellAgentConfig.max_tokens                                                                                 │
+│   Extra inputs are not permitted                                                                                  │
+│     For further information visit https://errors.pydantic.dev/2.11/v/extra_forbidden                              │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+
+=== SWE-AGENT STDERR ===
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/sidmoparthi/Projects-AI/neuro/.venv/lib/python3.11/site-packages/sweagent/__main__.py", line 4, in <module>
+    main()
+  File "/Users/sidmoparthi/Projects-AI/neuro/.venv/lib/python3.11/site-packages/sweagent/run/run.py", line 92, in main
+    run_single_main(remaining_args)
+  File "/Users/sidmoparthi/Projects-AI/neuro/.venv/lib/python3.11/site-packages/sweagent/run/run_single.py", line 221, in run_from_cli
+    run_from_config(BasicCLI(RunSingleConfig, help_text=help_text).get_config(args))  # type: ignore
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmoparthi/Projects-AI/neuro/.venv/lib/python3.11/site-packages/sweagent/run/common.py", line 353, in get_config
+    raise RuntimeError(msg) from None
+RuntimeError: Invalid configuration. Please check the above output.
