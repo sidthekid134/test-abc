@@ -1,0 +1,44 @@
+agent:
+  max_requeries: 3
+  model:
+    name: gpt-4o
+    per_instance_cost_limit: 3.0
+    temperature: 0.0
+  name: main
+  templates:
+    instance_template: 'Task: Implement: Create Health Check Route
+
+
+      Working directory: /Users/sidmoparthi/Projects-AI/neuro/run_outputs/plan-plan-fe359177-d3cfa32b
+
+
+      Execute this FIRST:
+
+      ```bash
+
+      pwd && ls -la
+
+      ```
+
+
+      Then implement the required changes. Use only tool calls, no text.'
+    system_template: You are SWE-agent. Your goal is to solve the task by making code
+      changes. You must start by exploring the repository. Use only tool calls, no
+      conversational text.
+  tools:
+    enable_bash_tool: true
+    env_vars:
+      PWD: /Users/sidmoparthi/Projects-AI/neuro/run_outputs/plan-plan-fe359177-d3cfa32b
+      WORKSPACE_ROOT: /Users/sidmoparthi/Projects-AI/neuro/run_outputs/plan-plan-fe359177-d3cfa32b
+    submit_command: submit
+env:
+  deployment:
+    type: dummy
+  repo:
+    base_commit: HEAD
+    path: /Users/sidmoparthi/Projects-AI/neuro/run_outputs/plan-plan-fe359177-d3cfa32b
+    type: local
+output_dir: /Users/sidmoparthi/Projects-AI/neuro/run_outputs/plan-plan-fe359177-d3cfa32b/swe_output
+problem_statement:
+  path: /Users/sidmoparthi/Projects-AI/neuro/run_outputs/plan-plan-fe359177-d3cfa32b/problem_7470e5a1-a1dc-4e45-9af3-c46b60f4f5c5.md
+  type: text_file
