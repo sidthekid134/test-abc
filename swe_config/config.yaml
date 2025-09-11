@@ -1,0 +1,58 @@
+agent:
+  max_requeries: 3
+  model:
+    name: gpt-4o
+    per_instance_cost_limit: 3.0
+    temperature: 0.0
+  name: main
+  templates:
+    instance_template: 'Task: Implement: Create Health Check Route
+
+
+      Working directory: /Users/sidmoparthi/Projects-AI/neuro/run_outputs/plan-plan-5391744e-1e4ae690
+
+
+      Execute this FIRST:
+
+      ```bash
+
+      pwd && ls -la
+
+      ```
+
+
+      Then implement the required changes. Use only tool calls, no text.'
+    system_template: 'You are SWE-agent, an autonomous coding agent. You work by:
+
+      1. Exploring the repository with bash commands
+
+      2. Reading files to understand the code
+
+      3. Making changes using the str_replace_editor tool
+
+      4. Creating new files when needed
+
+      5. Submitting your work when complete
+
+
+      IMPORTANT: Start immediately with a bash command. Do not write any greeting
+      or explanatory text.'
+  tools:
+    enable_bash_tool: true
+    env_vars:
+      PWD: /Users/sidmoparthi/Projects-AI/neuro/run_outputs/plan-plan-5391744e-1e4ae690
+      WORKSPACE_ROOT: /Users/sidmoparthi/Projects-AI/neuro/run_outputs/plan-plan-5391744e-1e4ae690
+    submit_command: submit
+env:
+  deployment:
+    type: dummy
+  repo:
+    base_commit: HEAD
+    path: /Users/sidmoparthi/Projects-AI/neuro/run_outputs/plan-plan-5391744e-1e4ae690
+    type: local
+  state_file: /Users/sidmoparthi/Projects-AI/neuro/run_outputs/plan-plan-5391744e-1e4ae690/.swe_agent/state.json
+output_dir: /Users/sidmoparthi/Projects-AI/neuro/run_outputs/plan-plan-5391744e-1e4ae690/swe_output
+problem_statement:
+  path: /Users/sidmoparthi/Projects-AI/neuro/run_outputs/plan-plan-5391744e-1e4ae690/problem_1fbfeb0a-0498-4613-8edf-11cb40f0a48f.md
+  type: text_file
+working_dir: /Users/sidmoparthi/Projects-AI/neuro/run_outputs/plan-plan-5391744e-1e4ae690

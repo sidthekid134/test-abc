@@ -1,0 +1,16 @@
+{
+  "initialized": true,
+  "workspace": "/Users/sidmoparthi/Projects-AI/neuro/run_outputs/plan-plan-5391744e-1e4ae690",
+  "timestamp": 1757566642.39886,
+  "story_id": "1fbfeb0a-0498-4613-8edf-11cb40f0a48f",
+  "objective": "Implement: Create Health Check Route",
+  "state": "ready",
+  "files_created": [],
+  "files_modified": [],
+  "current_file": null,
+  "commands_executed": [],
+  "agent_state": {
+    "mode": "exploration",
+    "step": 0
+  }
+}
