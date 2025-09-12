@@ -1,0 +1,19 @@
+2025-09-12 01:48:42,888 - INFO - swea-run - Starting environment
+2025-09-12 01:48:43,257 - TRACE - swea-env - Input:
+export LANG=C.UTF-8 && export LC_ALL=C.UTF-8 && export PIP_PROGRESS_BAR=off && export PAGER=cat
+2025-09-12 01:48:43,626 - TRACE - swea-env - Output:
+bash: /root/.bashrc: No such file or directory
+
+2025-09-12 01:48:43,627 - INFO - swea-env - Environment Initialized
+2025-09-12 01:48:43,628 - TRACE - swea-env - Input:
+cd /
+2025-09-12 01:48:43,761 - TRACE - swea-env - Output:
+
+2025-09-12 01:48:43,762 - TRACE - swea-env - Input:
+ls
+2025-09-12 01:48:43,903 - TRACE - swea-env - Output:
+Applications	Volumes		etc		sbin
+Library		bin		home		tmp
+System		cores		opt		usr
+Users		dev		private		var
+
