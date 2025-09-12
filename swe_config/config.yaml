@@ -1,0 +1,95 @@
+agent:
+  max_requeries: 3
+  model:
+    name: gpt-4o
+    per_instance_cost_limit: 3.0
+    temperature: 0.0
+  name: main
+  templates:
+    instance_template: 'Your task is to: Implement: Create Health Check Route
+
+
+      The user has provided the following acceptance criteria:
+
+      - Implement /health endpoint in FastAPI that returns {status: ''ok''} with 200
+
+
+      Please start by exploring the repository to understand the codebase. A good
+      first command is `ls -la`.'
+    system_template: You are SWE-agent, an autonomous software engineering agent.
+      Your goal is to solve the task by making code changes in the repository. Start
+      by exploring the repository to understand the context, then implement the changes.
+      You must use only tool calls and not conversational text.
+  tools:
+    bundles:
+    - editor.str_replace
+    - git.apply_patch
+    enable_bash_tool: true
+    submit_command: submit
+env:
+  deployment:
+    type: local
+  post_startup_commands:
+  - cd /Users/sidmoparthi/Projects-AI/neuro/run_outputs/plan-plan-92371f42-1fccff44
+  - pwd
+  repo:
+    path: /Users/sidmoparthi/Projects-AI/neuro/run_outputs/plan-plan-92371f42-1fccff44
+    type: local
+problem_statement:
+  text: '# Task: Implement: Create Health Check Route
+
+
+    ## Your first action MUST be a bash command
+
+
+    START with one of these commands:
+
+    ```bash
+
+    ls -la
+
+    ```
+
+    or
+
+    ```bash
+
+    find . -type f -name "*.py" | head -20
+
+    ```
+
+
+    Then proceed to implement the following:
+
+
+    ## Acceptance Criteria
+
+    - Implement /health endpoint in FastAPI that returns {status: ''ok''} with 200
+
+
+
+    ## Implementation Steps
+
+    1. First, explore the repository structure
+
+    2. Read any existing relevant files
+
+    3. Create or modify files to satisfy the acceptance criteria
+
+    4. Submit when complete
+
+
+    ## Remember
+
+    - Start with bash commands to explore
+
+    - Use str_replace_editor to modify files
+
+    - Create new files if needed
+
+    - Submit when done
+
+    - NO conversational text, ONLY tool calls
+
+    '
+  type: text
