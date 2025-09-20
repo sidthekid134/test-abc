@@ -12,5 +12,27 @@ class User(SQLModel, table=True):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
     
-    # Relationship fields can be added here as the application grows
-    # For example: todos: List["Todo"] = Relationship(back_populates="user")
+    # Relationship with Task model
+    tasks: List["Task"] = Relationship(back_populates="user")
+
+
+class TaskStatus(str):
+    TODO = "todo"
+    IN_PROGRESS = "in_progress"
+    COMPLETED = "completed"
+
+
+class Task(SQLModel, table=True):
+    """Task model for managing user tasks"""
+    id: Optional[int] = Field(default=None, primary_key=True)
+    title: str = Field(index=True)
+    description: Optional[str] = Field(default=None)
+    status: str = Field(default=TaskStatus.TODO)
+    priority: Optional[int] = Field(default=None, index=True)
+    due_date: Optional[datetime] = Field(default=None)
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    
+    # Foreign key to User
+    user_id: Optional[int] = Field(default=None, foreign_key="user.id")
+    user: Optional[User] = Relationship(back_populates="tasks")
