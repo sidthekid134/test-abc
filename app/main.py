@@ -11,3 +11,8 @@ app = FastAPI(title="FastAPI Application")
 async def root():
     """Root endpoint returning a welcome message."""
     return {"message": "Welcome to the FastAPI Application"}
+
+@app.get("/health-v2")
+async def health_check_v2():
+    """Health check endpoint for the application."""
+    return {"status": "healthy"}
