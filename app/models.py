@@ -1,7 +1,7 @@
 from sqlmodel import SQLModel, Field, Column, String
 from typing import Optional
 from datetime import datetime
-from pydantic import EmailStr, validator
+from pydantic import EmailStr, validator, BaseModel
 import re
 
 class UserBase(SQLModel):
