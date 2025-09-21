@@ -1,5 +1,5 @@
-from sqlmodel import SQLModel, Field, Column, String
-from typing import Optional
+from sqlmodel import SQLModel, Field, Column, String, Relationship
+from typing import Optional, List
 from datetime import datetime
 from pydantic import EmailStr, validator, BaseModel
 import re
@@ -26,6 +26,9 @@ class User(UserBase, table=True):
     hashed_password: str = Field(sa_column=Column(String, nullable=False))
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
+    
+    # Relationship with tasks
+    tasks: List["Task"] = Relationship(back_populates="user")
     
 
 class UserCreate(UserBase):
