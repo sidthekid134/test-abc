@@ -59,3 +59,13 @@ class TaskRead(TaskBase):
     id: int
     created_at: datetime
     updated_at: datetime
+
+
+class TaskBulkCreate(SQLModel):
+    """Model for creating multiple tasks at once"""
+    tasks: List[TaskCreate]
+
+
+class TaskBulkUpdate(SQLModel):
+    """Model for updating multiple tasks at once"""
+    items: List[dict]  # List of {id: int, updates: TaskUpdate}
