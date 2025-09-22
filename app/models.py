@@ -1,7 +1,7 @@
 from datetime import datetime
-from typing import Optional, List
+from typing import Optional, List, Set
 from sqlmodel import SQLModel, Field, Relationship
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, validator
 
 
 class TaskBase(SQLModel):
@@ -11,6 +11,7 @@ class TaskBase(SQLModel):
     due_date: Optional[datetime] = Field(default=None)
     is_completed: bool = Field(default=False)
     priority: Optional[str] = Field(default="medium")
+    tags: Optional[List[str]] = Field(default=[], sa_column=Field(default=[]))
 
 
 class Task(TaskBase, table=True):
@@ -40,6 +41,13 @@ class TaskUpdate(SQLModel):
     due_date: Optional[datetime] = None
     is_completed: Optional[bool] = None
     priority: Optional[str] = None
+    tags: Optional[List[str]] = None
+    
+    @validator('priority')
+    def validate_priority(cls, v):
+        if v is not None and v not in ["low", "medium", "high"]:
+            raise ValueError("Priority must be one of: low, medium, high")
+        return v
 
 
 class UserBase(SQLModel):
