@@ -15,6 +15,15 @@ class UserLogin(UserBase):
     password: str
 
 
+class UserUpdate(BaseModel):
+    email: Optional[EmailStr] = None
+    password: Optional[str] = Field(None, min_length=8)
+    is_active: Optional[bool] = None
+    
+    class Config:
+        orm_mode = True
+
+
 class User(UserBase):
     id: int
     is_active: bool
