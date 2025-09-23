@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from app.database import engine, Base, get_db
-from app.routers import users
+from app.routers import users, tasks
 from app import models
 
 # Create database tables
@@ -27,6 +27,7 @@ app.add_middleware(
 
 # Include routers
 app.include_router(users.router)
+app.include_router(tasks.router)
 
 
 # Root endpoint
