@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr, Field
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 
 
@@ -28,6 +28,42 @@ class User(UserBase):
     id: int
     is_active: bool
     created_at: datetime
+    
+    class Config:
+        orm_mode = True
+
+
+class TaskBase(BaseModel):
+    title: str
+    description: Optional[str] = None
+    is_completed: Optional[bool] = False
+
+
+class TaskCreate(TaskBase):
+    pass
+
+
+class TaskUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    is_completed: Optional[bool] = None
+    
+    class Config:
+        orm_mode = True
+
+
+class Task(TaskBase):
+    id: int
+    owner_id: int
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+    
+    class Config:
+        orm_mode = True
+
+
+class UserTasks(User):
+    tasks: List[Task] = []
     
     class Config:
         orm_mode = True
