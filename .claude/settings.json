@@ -1,0 +1,75 @@
+{
+    "hooks": {
+        "PreToolUse": [
+            {
+                "matcher": "Write|Edit|MultiEdit",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "echo '[NEURO] File operation initiated: Writing/Editing files in workspace' >> $CLAUDE_PROJECT_DIR/.claude/operations.log"
+                    }
+                ]
+            },
+            {
+                "matcher": "Bash(pwd:*)",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "echo '[NEURO] Directory verification: Checking current working directory' >> $CLAUDE_PROJECT_DIR/.claude/operations.log"
+                    }
+                ]
+            }
+        ],
+        "PostToolUse": [
+            {
+                "matcher": "Write|Edit|MultiEdit",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "echo '[NEURO] File operation completed: Changes made to workspace files' >> $CLAUDE_PROJECT_DIR/.claude/operations.log"
+                    }
+                ]
+            }
+        ],
+        "SessionStart": [
+            {
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "echo '[NEURO] Claude Code session started in workspace: '$(pwd) >> $CLAUDE_PROJECT_DIR/.claude/operations.log"
+                    }
+                ]
+            }
+        ],
+        "SessionEnd": [
+            {
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "echo '[NEURO] Claude Code session ended. Final workspace state:' >> $CLAUDE_PROJECT_DIR/.claude/operations.log && ls -la >> $CLAUDE_PROJECT_DIR/.claude/operations.log"
+                    }
+                ]
+            }
+        ]
+    },
+    "permissions": {
+        "allowedTools": [
+            "Bash(pwd:*)",
+            "Bash(ls:*)",
+            "Bash(find:*)",
+            "Bash(git:*)",
+            "Read",
+            "Write",
+            "Edit",
+            "MultiEdit",
+            "Glob",
+            "Grep"
+        ],
+        "disallowedTools": [
+            "Bash(rm:*)",
+            "Bash(rmdir:*)",
+            "Bash(sudo:*)",
+            "Bash(chmod:*)"
+        ]
+    }
+}
