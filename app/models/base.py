@@ -13,10 +13,12 @@ class TaskStatus(str, Enum):
 
 
 class TaskBase(SQLModel):
-    title: str = Field(index=True)
-    description: Optional[str] = Field(default=None)
+    title: str = Field(index=True, min_length=1, max_length=100)
+    description: Optional[str] = Field(default=None, max_length=1000)
     status: TaskStatus = Field(default=TaskStatus.TODO)
     due_date: Optional[datetime] = Field(default=None)
+    priority: Optional[int] = Field(default=0, ge=0, le=10, description="Priority level (0-10)")
+    tags: Optional[str] = Field(default=None, max_length=200, description="Comma-separated tags")
 
 
 class Task(TaskBase, table=True):
@@ -27,14 +29,19 @@ class Task(TaskBase, table=True):
 
 
 class TaskCreate(TaskBase):
-    pass
+    due_date: Optional[datetime] = Field(
+        default=None, 
+        description="Must be a future date if provided"
+    )
 
 
 class TaskUpdate(SQLModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
+    title: Optional[str] = Field(default=None, min_length=1, max_length=100)
+    description: Optional[str] = Field(default=None, max_length=1000)
     status: Optional[TaskStatus] = None
     due_date: Optional[datetime] = None
+    priority: Optional[int] = Field(default=None, ge=0, le=10)
+    tags: Optional[str] = Field(default=None, max_length=200)
 
 
 class TaskRead(TaskBase):
