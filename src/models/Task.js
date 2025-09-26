@@ -1,82 +1,79 @@
 /**
- * Task model (in-memory implementation for MVP)
+ * Task model (MongoDB implementation)
  */
+const mongoose = require('mongoose');
 
-// In-memory array to store tasks
-let tasks = [];
-let nextId = 1;
-
-class Task {
-  /**
-   * Get all tasks
-   * @returns {Array} Array of tasks
-   */
-  static getAll() {
-    return tasks;
+/**
+ * Task schema definition
+ */
+const taskSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: [true, 'A task must have a title'],
+      trim: true,
+      maxlength: [100, 'Title cannot be more than 100 characters']
+    },
+    description: {
+      type: String,
+      trim: true,
+      default: ''
+    },
+    status: {
+      type: String,
+      enum: {
+        values: ['pending', 'in-progress', 'completed'],
+        message: 'Status must be: pending, in-progress, or completed'
+      },
+      default: 'pending'
+    },
+    priority: {
+      type: String,
+      enum: {
+        values: ['low', 'medium', 'high'],
+        message: 'Priority must be: low, medium, or high'
+      },
+      default: 'medium'
+    },
+    dueDate: {
+      type: Date,
+      default: null
+    }
+  },
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
   }
+);
 
-  /**
-   * Get task by ID
-   * @param {number} id - Task ID
-   * @returns {Object|null} Task object or null if not found
-   */
-  static getById(id) {
-    return tasks.find(task => task.id === parseInt(id)) || null;
-  }
+// Add any indexes for improved query performance
+taskSchema.index({ status: 1 });
+taskSchema.index({ priority: 1 });
 
-  /**
-   * Create a new task
-   * @param {Object} taskData - Task data
-   * @returns {Object} Created task
-   */
-  static create(taskData) {
-    const task = {
-      id: nextId++,
-      title: taskData.title,
-      description: taskData.description || '',
-      status: taskData.status || 'pending',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
+/**
+ * Pre-save middleware
+ */
+taskSchema.pre('save', function(next) {
+  // Any pre-save operations can go here
+  next();
+});
 
-    tasks.push(task);
-    return task;
-  }
+/**
+ * Instance methods
+ */
+taskSchema.methods.isPastDue = function() {
+  if (!this.dueDate) return false;
+  return new Date() > this.dueDate;
+};
 
-  /**
-   * Update an existing task
-   * @param {number} id - Task ID
-   * @param {Object} taskData - Updated task data
-   * @returns {Object|null} Updated task or null if not found
-   */
-  static update(id, taskData) {
-    const index = tasks.findIndex(task => task.id === parseInt(id));
+/**
+ * Static methods
+ */
+taskSchema.statics.findByStatus = function(status) {
+  return this.find({ status });
+};
 
-    if (index === -1) return null;
-
-    const updatedTask = {
-      ...tasks[index],
-      ...taskData,
-      updatedAt: new Date().toISOString()
-    };
-
-    tasks[index] = updatedTask;
-    return updatedTask;
-  }
-
-  /**
-   * Delete a task
-   * @param {number} id - Task ID
-   * @returns {boolean} True if deleted, false if not found
-   */
-  static delete(id) {
-    const index = tasks.findIndex(task => task.id === parseInt(id));
-
-    if (index === -1) return false;
-
-    tasks.splice(index, 1);
-    return true;
-  }
-}
-
+// Create and export model
+const Task = mongoose.model('Task', taskSchema);
 module.exports = Task;
