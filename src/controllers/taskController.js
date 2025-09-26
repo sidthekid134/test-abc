@@ -5,16 +5,56 @@ const Task = require('../models/Task');
  */
 const taskController = {
   /**
-   * Get all tasks
+   * Get all tasks with filtering and pagination
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
    * @param {Function} next - Express next middleware function
    */
-  getAllTasks: (req, res, next) => {
+  getAllTasks: async (req, res, next) => {
     try {
-      const tasks = Task.getAll();
+      // Build query
+      const queryObj = { ...req.query };
+
+      // Exclude special fields
+      const excludedFields = ['page', 'sort', 'limit', 'fields'];
+      excludedFields.forEach(field => delete queryObj[field]);
+
+      // Advanced filtering
+      let queryStr = JSON.stringify(queryObj);
+      queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
+
+      let query = Task.find(JSON.parse(queryStr));
+
+      // Sorting
+      if (req.query.sort) {
+        const sortBy = req.query.sort.split(',').join(' ');
+        query = query.sort(sortBy);
+      } else {
+        query = query.sort('-createdAt');
+      }
+
+      // Pagination
+      const page = parseInt(req.query.page, 10) || 1;
+      const limit = parseInt(req.query.limit, 10) || 100;
+      const skip = (page - 1) * limit;
+
+      query = query.skip(skip).limit(limit);
+
+      // Execute query
+      const tasks = await query;
+
+      // Count total documents for pagination info
+      const totalTasks = await Task.countDocuments(JSON.parse(queryStr));
+
       res.status(200).json({
         status: 'success',
+        results: tasks.length,
+        total: totalTasks,
+        pagination: {
+          currentPage: page,
+          totalPages: Math.ceil(totalTasks / limit),
+          limit
+        },
         data: {
           tasks
         }
@@ -30,10 +70,9 @@ const taskController = {
    * @param {Object} res - Express response object
    * @param {Function} next - Express next middleware function
    */
-  getTaskById: (req, res, next) => {
+  getTaskById: async (req, res, next) => {
     try {
-      const { id } = req.params;
-      const task = Task.getById(id);
+      const task = await Task.findById(req.params.id);
 
       if (!task) {
         const error = new Error('Task not found');
@@ -48,6 +87,12 @@ const taskController = {
         }
       });
     } catch (error) {
+      // Handle invalid ID format
+      if (error.name === 'CastError') {
+        const castError = new Error('Invalid task ID format');
+        castError.statusCode = 400;
+        return next(castError);
+      }
       next(error);
     }
   },
@@ -58,16 +103,10 @@ const taskController = {
    * @param {Object} res - Express response object
    * @param {Function} next - Express next middleware function
    */
-  createTask: (req, res, next) => {
+  createTask: async (req, res, next) => {
     try {
-      // Simple validation
-      if (!req.body.title) {
-        const error = new Error('Title is required');
-        error.statusCode = 400;
-        throw error;
-      }
-
-      const newTask = Task.create(req.body);
+      // Schema validation will handle required fields
+      const newTask = await Task.create(req.body);
 
       res.status(201).json({
         status: 'success',
@@ -76,6 +115,13 @@ const taskController = {
         }
       });
     } catch (error) {
+      // Mongoose validation error
+      if (error.name === 'ValidationError') {
+        const messages = Object.values(error.errors).map(val => val.message);
+        const validationError = new Error(messages.join('. '));
+        validationError.statusCode = 400;
+        return next(validationError);
+      }
       next(error);
     }
   },
@@ -86,12 +132,18 @@ const taskController = {
    * @param {Object} res - Express response object
    * @param {Function} next - Express next middleware function
    */
-  updateTask: (req, res, next) => {
+  updateTask: async (req, res, next) => {
     try {
-      const { id } = req.params;
-      const updatedTask = Task.update(id, req.body);
+      const task = await Task.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        {
+          new: true, // Return updated document
+          runValidators: true // Run validators on update
+        }
+      );
 
-      if (!updatedTask) {
+      if (!task) {
         const error = new Error('Task not found');
         error.statusCode = 404;
         throw error;
@@ -100,10 +152,23 @@ const taskController = {
       res.status(200).json({
         status: 'success',
         data: {
-          task: updatedTask
+          task
         }
       });
     } catch (error) {
+      // Handle invalid ID format
+      if (error.name === 'CastError') {
+        const castError = new Error('Invalid task ID format');
+        castError.statusCode = 400;
+        return next(castError);
+      }
+      // Mongoose validation error
+      if (error.name === 'ValidationError') {
+        const messages = Object.values(error.errors).map(val => val.message);
+        const validationError = new Error(messages.join('. '));
+        validationError.statusCode = 400;
+        return next(validationError);
+      }
       next(error);
     }
   },
@@ -114,12 +179,11 @@ const taskController = {
    * @param {Object} res - Express response object
    * @param {Function} next - Express next middleware function
    */
-  deleteTask: (req, res, next) => {
+  deleteTask: async (req, res, next) => {
     try {
-      const { id } = req.params;
-      const deleted = Task.delete(id);
+      const task = await Task.findByIdAndDelete(req.params.id);
 
-      if (!deleted) {
+      if (!task) {
         const error = new Error('Task not found');
         error.statusCode = 404;
         throw error;
@@ -127,6 +191,12 @@ const taskController = {
 
       res.status(204).send();
     } catch (error) {
+      // Handle invalid ID format
+      if (error.name === 'CastError') {
+        const castError = new Error('Invalid task ID format');
+        castError.statusCode = 400;
+        return next(castError);
+      }
       next(error);
     }
   }

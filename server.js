@@ -6,6 +6,9 @@ const dotenv = require('dotenv');
 // Load environment variables
 dotenv.config();
 
+// Import database connection
+const { connectDB } = require('./src/config/database');
+
 // Import routes
 const taskRoutes = require('./src/routes/taskRoutes');
 
@@ -41,9 +44,36 @@ app.use(notFound);
 // Error handling middleware (handle all other errors)
 app.use(errorHandler);
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Connect to database and start server
+const startServer = async () => {
+  try {
+    // Connect to MongoDB
+    await connectDB();
 
-module.exports = app;
+    // Start server
+    const server = app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV} mode`);
+    });
+
+    // Handle unhandled promise rejections
+    process.on('unhandledRejection', (err) => {
+      console.error(`Unhandled Rejection: ${err.message}`);
+      console.error(err.stack);
+
+      // Close server & exit process
+      server.close(() => process.exit(1));
+    });
+
+    return server;
+  } catch (error) {
+    console.error(`Failed to start server: ${error.message}`);
+    process.exit(1);
+  }
+};
+
+// Start server if this file is run directly (not imported)
+if (require.main === module) {
+  startServer();
+}
+
+module.exports = { app, startServer };
