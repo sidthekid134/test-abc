@@ -1,19 +1,34 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List as TypeList
 from sqlmodel import SQLModel, Field
 from enum import Enum as PyEnum
+from pydantic import validator
 
 class TaskStatus(str, PyEnum):
     TODO = "todo"
     IN_PROGRESS = "in_progress"
     DONE = "done"
 
+class TaskPriority(str, PyEnum):
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+
 class TaskBase(SQLModel):
     """Base class for Task schema."""
     title: str
     description: Optional[str] = None
     status: TaskStatus = TaskStatus.TODO
+    priority: TaskPriority = TaskPriority.MEDIUM
     due_date: Optional[datetime] = None
+    tags: Optional[TypeList[str]] = Field(default=[])
+    completed_at: Optional[datetime] = None
+
+    @validator('title')
+    def title_must_not_be_empty(cls, v):
+        if not v or not v.strip():
+            raise ValueError('Title cannot be empty')
+        return v
 
 class Task(TaskBase, table=True):
     """Task model for database storage."""
@@ -33,7 +48,16 @@ class TaskUpdate(SQLModel):
     title: Optional[str] = None
     description: Optional[str] = None
     status: Optional[TaskStatus] = None
+    priority: Optional[TaskPriority] = None
     due_date: Optional[datetime] = None
+    tags: Optional[TypeList[str]] = None
+    completed_at: Optional[datetime] = None
+
+    @validator('title')
+    def title_must_not_be_empty(cls, v):
+        if v is not None and not v.strip():
+            raise ValueError('Title cannot be empty')
+        return v
 
 class TaskRead(TaskBase):
     """Schema for reading a task."""
