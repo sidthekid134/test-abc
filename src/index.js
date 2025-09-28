@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 
 // Load config
 const config = require('./config/config');
+const connectDB = require('./config/db');
 
 // Import routes
 const taskRoutes = require('./routes/tasks');
@@ -37,9 +38,11 @@ app.get('/', (req, res) => {
 app.use(notFound);
 app.use(errorHandler);
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// Connect to MongoDB and start server
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
 });
 
 module.exports = app; // For testing purposes

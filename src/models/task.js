@@ -1,66 +1,60 @@
 /**
  * Task Model
  *
- * This is a simple mock model for tasks. In a real application, this would
- * interact with a database using an ORM like Sequelize or Mongoose.
+ * Mongoose schema for tasks with validation
  */
+const mongoose = require('mongoose');
 
-class Task {
-  constructor(id, title, description = '', completed = false) {
-    this.id = id;
-    this.title = title;
-    this.description = description;
-    this.completed = completed;
-    this.createdAt = new Date();
-    this.updatedAt = new Date();
+const TaskSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: [true, 'Task title is required'],
+      trim: true,
+      maxlength: [100, 'Task title cannot be more than 100 characters']
+    },
+    description: {
+      type: String,
+      trim: true,
+      default: '',
+      maxlength: [500, 'Task description cannot be more than 500 characters']
+    },
+    completed: {
+      type: Boolean,
+      default: false
+    },
+    priority: {
+      type: String,
+      enum: ['low', 'medium', 'high'],
+      default: 'medium'
+    },
+    dueDate: {
+      type: Date,
+      default: null
+    }
+  },
+  {
+    timestamps: true
+  }
+);
+
+// Add index for better performance on common queries
+TaskSchema.index({ completed: 1 });
+
+/**
+ * Custom validation middleware for task updates
+ * Ensures at least one field is provided when updating
+ */
+TaskSchema.statics.validateUpdate = function (updateData) {
+  const updates = Object.keys(updateData);
+  const allowedUpdates = ['title', 'description', 'completed', 'priority', 'dueDate'];
+  const isValidOperation = updates.some(update => allowedUpdates.includes(update));
+
+  if (!isValidOperation) {
+    throw new Error('No valid update fields provided');
   }
 
-  // Static methods to be replaced with actual database operations in the future
-  static getAll() {
-    return [
-      new Task(1, 'Task 1', 'Description for Task 1'),
-      new Task(2, 'Task 2', 'Description for Task 2', true)
-    ];
-  }
+  return true;
+};
 
-  static getById(id) {
-    const parsedId = parseInt(id);
-    const tasks = this.getAll();
-    return tasks.find(task => task.id === parsedId) || null;
-  }
-
-  static create(taskData) {
-    const { title, description } = taskData;
-    const tasks = this.getAll();
-    const id = tasks.length + 1;
-    const newTask = new Task(id, title, description);
-    return newTask;
-  }
-
-  static update(id, taskData) {
-    const parsedId = parseInt(id);
-    const { title, description, completed } = taskData;
-    const task = this.getById(parsedId);
-
-    if (!task) return null;
-
-    task.title = title || task.title;
-    task.description = description || task.description;
-    task.completed = completed !== undefined ? completed : task.completed;
-    task.updatedAt = new Date();
-
-    return task;
-  }
-
-  static delete(id) {
-    const parsedId = parseInt(id);
-    const tasks = this.getAll();
-    const index = tasks.findIndex(task => task.id === parsedId);
-
-    if (index === -1) return false;
-
-    return true;
-  }
-}
-
-module.exports = Task;
+module.exports = mongoose.model('Task', TaskSchema);
