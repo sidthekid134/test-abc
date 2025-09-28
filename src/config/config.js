@@ -11,8 +11,14 @@ module.exports = {
   port: process.env.PORT || 3000,
   nodeEnv: process.env.NODE_ENV || 'development',
 
+  // Database configuration
+  mongoURI: process.env.MONGO_URI || 'mongodb://localhost:27017/task-management',
+  mongoOptions: {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+
   // Future configurations to be added:
-  // - Database connection
   // - Authentication (JWT, etc.)
   // - Logging
 };
