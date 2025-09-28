@@ -2,6 +2,11 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const config = require('./src/config/config');
+const { connectDB } = require('./src/database/db');
+const { errorHandler } = require('./src/middleware/errorHandler');
+
+// Connect to the database
+connectDB();
 
 // Initialize express app
 const app = express();
@@ -16,7 +21,7 @@ app.use(morgan(config.logging.level));
 const taskRoutes = require('./src/routes/taskRoutes');
 
 // Use routes
-app.use(`${config.api.prefix}/tasks`, taskRoutes);
+app.use(`${config.api.prefix}/${config.api.version}/tasks`, taskRoutes);
 
 // Root route
 app.get('/', (req, res) => {
@@ -28,13 +33,7 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT} in ${config.server.environment} mode`);
 });
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({
-    success: false,
-    error: 'Server Error'
-  });
-});
+// Global error handling middleware
+app.use(errorHandler);
 
 module.exports = app;

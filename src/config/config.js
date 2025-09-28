@@ -25,11 +25,21 @@ module.exports = {
   // API configuration
   api: {
     prefix: '/api',
-    version: 'v1'
+    version: 'v2'
   },
 
   // Logging configuration
   logging: {
     level: process.env.LOG_LEVEL || 'dev'
+  },
+
+  // Database configuration
+  database: {
+    url: process.env.MONGO_URI || 'mongodb://localhost:27017/apollo',
+    options: {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      autoIndex: true
+    }
   }
 };
