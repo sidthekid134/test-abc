@@ -1,167 +1,70 @@
 const express = require('express');
 const router = express.Router();
 
-// Import task model (placeholder for now)
-const Task = require('../models/taskModel');
+// Import task controller
+const taskController = require('../controllers/taskController');
+
+// Import validation middleware
+const { taskValidationRules, checkValidation } = require('../middleware/validation');
 
 /**
- * @route   GET /api/tasks
- * @desc    Get all tasks
+ * @route   GET /api/v2/tasks
+ * @desc    Get all tasks with filtering, pagination and sorting
  * @access  Public
  */
-router.get('/', async (req, res) => {
-  try {
-    // Placeholder for database query
-    const tasks = []; // This will be replaced with actual data from the database
-    res.status(200).json({
-      success: true,
-      count: tasks.length,
-      data: tasks
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: 'Server Error'
-    });
-  }
-});
+router.get(
+  '/',
+  taskValidationRules.list,
+  checkValidation,
+  taskController.getTasks
+);
 
 /**
- * @route   GET /api/tasks/:id
- * @desc    Get single task
+ * @route   GET /api/v2/tasks/:id
+ * @desc    Get single task by ID
  * @access  Public
  */
-router.get('/:id', async (req, res) => {
-  try {
-    // Placeholder for database query
-    const task = null; // This will be replaced with actual data from the database
-
-    if (!task) {
-      return res.status(404).json({
-        success: false,
-        error: 'Task not found'
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      data: task
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: 'Server Error'
-    });
-  }
-});
+router.get(
+  '/:id',
+  taskValidationRules.getById,
+  checkValidation,
+  taskController.getTaskById
+);
 
 /**
- * @route   POST /api/tasks
- * @desc    Create a task
+ * @route   POST /api/v2/tasks
+ * @desc    Create a new task
  * @access  Public
  */
-router.post('/', async (req, res) => {
-  try {
-    // Validate request
-    const { title, description, status } = req.body;
-
-    if (!title) {
-      return res.status(400).json({
-        success: false,
-        error: 'Please provide a title for the task'
-      });
-    }
-
-    // Placeholder for database insertion
-    const task = {
-      id: Date.now().toString(),
-      title,
-      description: description || '',
-      status: status || 'pending',
-      createdAt: new Date().toISOString()
-    };
-
-    res.status(201).json({
-      success: true,
-      data: task
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: 'Server Error'
-    });
-  }
-});
+router.post(
+  '/',
+  taskValidationRules.create,
+  checkValidation,
+  taskController.createTask
+);
 
 /**
- * @route   PUT /api/tasks/:id
- * @desc    Update a task
+ * @route   PUT /api/v2/tasks/:id
+ * @desc    Update a task by ID
  * @access  Public
  */
-router.put('/:id', async (req, res) => {
-  try {
-    // Validate request
-    const { title, description, status } = req.body;
-
-    // Placeholder for database update
-    const taskId = req.params.id;
-    const task = {
-      id: taskId,
-      title,
-      description,
-      status,
-      updatedAt: new Date().toISOString()
-    };
-
-    if (!task) {
-      return res.status(404).json({
-        success: false,
-        error: 'Task not found'
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      data: task
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: 'Server Error'
-    });
-  }
-});
+router.put(
+  '/:id',
+  taskValidationRules.update,
+  checkValidation,
+  taskController.updateTask
+);
 
 /**
- * @route   DELETE /api/tasks/:id
- * @desc    Delete a task
+ * @route   DELETE /api/v2/tasks/:id
+ * @desc    Delete a task by ID
  * @access  Public
  */
-router.delete('/:id', async (req, res) => {
-  try {
-    // Placeholder for database deletion
-    const taskId = req.params.id;
-
-    // Pretend we've deleted it
-    const success = true;
-
-    if (!success) {
-      return res.status(404).json({
-        success: false,
-        error: 'Task not found'
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      data: {}
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: 'Server Error'
-    });
-  }
-});
+router.delete(
+  '/:id',
+  taskValidationRules.delete,
+  checkValidation,
+  taskController.deleteTask
+);
 
 module.exports = router;
