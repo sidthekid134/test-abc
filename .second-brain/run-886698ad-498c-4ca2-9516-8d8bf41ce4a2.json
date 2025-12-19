@@ -1,0 +1,110 @@
+{
+  "run_id": "8aad8bfe-2846-4c24-ba19-5406bd2d6654",
+  "project_id": "498604b1-5a48-48b7-b7c5-50886b90b29f",
+  "run_mode": "merge",
+  "run_number": 1,
+  "status": "done",
+  "started_at": "2025-12-19T21:14:32.548949",
+  "ended_at": "2025-12-19T21:18:27.843837",
+  "duration_seconds": 235.294888,
+  "coordinator_branch": null,
+  "intent_branch": "intent/test-8aad8bfe",
+  "pr_number": 700,
+  "pr_url": "https://github.com/sidthekid134/test-abc/pull/700",
+  "total_stories": 2,
+  "completed_stories": 2,
+  "failed_stories": 0,
+  "snapshot": {
+    "id": "886698ad-498c-4ca2-9516-8d8bf41ce4a2",
+    "name": "test",
+    "description": "",
+    "dependencies": [],
+    "stories": [
+      {
+        "id": "133bd652-d55f-4fe0-8250-e5724e490437",
+        "title": "111",
+        "description": "111",
+        "objective": "111",
+        "acceptance_criteria": [],
+        "implementation_notes": [],
+        "dependencies": [],
+        "workstream_id": "default",
+        "complexity_score": 1,
+        "estimated_tokens": 5000,
+        "status": "draft",
+        "order_index": 0,
+        "preferences": {}
+      },
+      {
+        "id": "eaf349cd-7010-479a-bef9-ac171d6c72cf",
+        "title": null,
+        "description": "112",
+        "objective": "New story",
+        "acceptance_criteria": [],
+        "implementation_notes": [],
+        "dependencies": [
+          {
+            "type": "story",
+            "id": "133bd652-d55f-4fe0-8250-e5724e490437"
+          }
+        ],
+        "workstream_id": "default",
+        "complexity_score": 0,
+        "estimated_tokens": 5000,
+        "status": "draft",
+        "order_index": 1,
+        "preferences": {}
+      }
+    ]
+  },
+  "story_executions": [
+    {
+      "story_id": "133bd652-d55f-4fe0-8250-e5724e490437",
+      "title": "111",
+      "description": "111",
+      "objective": "111",
+      "execution_id": "6f1d6c67-25dd-4871-a886-954ecc184200",
+      "attempt_number": 1,
+      "status": "done",
+      "agent_id": "claude-engineer-1",
+      "agent_name": "Full-Stack Development Specialist",
+      "branch": "story/133bd652-d55f-4fe0-8250-e5724e490437-8aad8bfe",
+      "commit_sha": null,
+      "pr_number": 698,
+      "pr_url": "https://github.com/sidthekid134/test-abc/pull/698",
+      "started_at": "2025-12-19T21:14:33.051717",
+      "ended_at": "2025-12-19T21:16:40.307670",
+      "duration_seconds": 127.255953,
+      "messages_count": null,
+      "files_modified": 0,
+      "lines_added": 0,
+      "lines_removed": 0,
+      "error_message": null
+    },
+    {
+      "story_id": "eaf349cd-7010-479a-bef9-ac171d6c72cf",
+      "title": null,
+      "description": "112",
+      "objective": "New story",
+      "execution_id": "91b1414b-e7c2-4897-9646-276acc6522ec",
+      "attempt_number": 1,
+      "status": "done",
+      "agent_id": "claude-engineer-1",
+      "agent_name": "Full-Stack Development Specialist",
+      "branch": "story/eaf349cd-7010-479a-bef9-ac171d6c72cf-8aad8bfe",
+      "commit_sha": null,
+      "pr_number": 699,
+      "pr_url": "https://github.com/sidthekid134/test-abc/pull/699",
+      "started_at": "2025-12-19T21:16:41.496410",
+      "ended_at": "2025-12-19T21:18:25.410940",
+      "duration_seconds": 103.91453,
+      "messages_count": null,
+      "files_modified": 2,
+      "lines_added": 0,
+      "lines_removed": 0,
+      "error_message": null
+    }
+  ],
+  "created_at": "2025-12-19T21:14:32.493083+00:00",
+  "updated_at": "2025-12-19T21:18:27.848653+00:00"
+}
