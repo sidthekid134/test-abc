@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 from app.database.database import create_db_and_tables
-from app.routers import user, item
+from app.routers import user, item, story
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -28,6 +28,7 @@ app.add_middleware(
 # Include routers
 app.include_router(user.router, prefix="/api/users", tags=["users"])
 app.include_router(item.router, prefix="/api/items", tags=["items"])
+app.include_router(story.router, prefix="/api/stories", tags=["stories"])
 
 # Startup event
 @app.on_event("startup")
